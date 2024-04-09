@@ -1,0 +1,44 @@
+{% extends 'app_number/base.html' %}
+{% load static %}
+{% block title %}Dashboard {% endblock title %}
+
+{% block main_content %}
+<h1 class="text-center py-4">Dashboard</h1>
+<div class="container p-3 rounded border border-success ">
+    <div class="d-flex flex-row gap-3">
+        <div class="p-2 w-50">
+            <h4 id="dashboard-name"><b>Name: </b>{{name}}</h4>
+            <p>
+                <b>Slug: </b><span id="dashboard-slug">{{slug}}</span> <br>
+                <b>User: </b><span id="user">{{user}}</span>
+            </p>
+
+            <div class="input-group flex-nowrap mb-4">
+                <input type="number" id="data-input" class="form-control" name="add-number" placeholder="Contribute your number">
+                <button type="submit" id="submit-btn" class="btn btn-secondary">Add</button>
+            </div>
+
+            <ul class="list-group" id="data-list">
+                {% if data %}
+                {% for el in data %}
+                    <li class="list-group-item">{{ el.owner }}: {{ el.value }}</li>
+                {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="p-2 w-50" style="height: 400px !important; display: flex; justify-content: space-around;">
+            <canvas id="chart">Graph View</canvas>
+        </div>
+      </div>
+</div>
+
+{{ chart_data|json_script:"chart-data" }}
+{{ chart_labels|json_script:"chart-labels" }}
+
+{% endblock main_content %}
+
+{% block script %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/main.js' %}" defer></script>
+{% endblock script %}
